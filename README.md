@@ -1,3 +1,20 @@
-# Repository Template
+# Shared Assets
 
-This is a repository template for Cloudflare Workers projects.
+Centralized static assets for Lumaris applications. The Worker serves files from
+`src/assets` through Cloudflare Workers Static Assets.
+
+## URLs
+
+- Logos: `https://shared-assets.danielersen.workers.dev/assets/logo/`
+- Icons: `https://shared-assets.danielersen.workers.dev/assets/icons/`
+
+Consumers must use the absolute Worker URL above instead of copying these files
+into their own frontend bundles.
+
+## Development
+
+```sh
+npm install
+npm run dev
+npm run deploy
+```

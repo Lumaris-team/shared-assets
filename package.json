@@ -1,5 +1,5 @@
 {
-  "name": "repository-template",
+  "name": "shared-assets",
   "version": "1.0.0",
   "description": "Cloudflare Workers repository template",
   "packageManager": "npm@11.16.0",
