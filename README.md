@@ -5,8 +5,8 @@ Centralized static assets for Lumaris applications. The Worker serves files from
 
 ## URLs
 
-- Logos: `https://shared-assets.danielersen.workers.dev/assets/logo/`
-- Icons: `https://shared-assets.danielersen.workers.dev/assets/icons/`
+- Logos: `https://shared-assets.lumaris.fr.eu.org/assets/logo/`
+- Icons: `https://shared-assets.lumaris.fr.eu.org/assets/icons/`
 
 Consumers must use the absolute Worker URL above instead of copying these files
 into their own frontend bundles.
