@@ -40,8 +40,8 @@ const NAVBAR_STYLE = `
   @media (max-width: 640px) { :host { inset: 8px 10px auto; } .bar { min-height: 48px; padding: 10px; border-radius: 20px; } .feature-label { display: none; } .feature { padding: 8px 10px; } .quick:not(.more) { display: none; } }
 `;
 
-function getNavbarConfig() {
-  const isApp = /\/pages\//.test(window.location.pathname);
+function navbar(site) {
+  const isApp = site === 'client-worker';
   if (isApp) {
     return {
       items: [
@@ -87,7 +87,7 @@ function templateFor(config) {
 class SiteNavbar extends HTMLElement {
   connectedCallback() {
     if (this.shadowRoot) return;
-    const config = getNavbarConfig();
+    const config = navbar(this.getAttribute('site'));
     this.attachShadow({ mode: 'open' });
     this.shadowRoot.innerHTML = `<style>${NAVBAR_STYLE}</style>${templateFor(config)}`;
     this.setupIndicator();
