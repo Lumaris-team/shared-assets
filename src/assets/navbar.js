@@ -27,7 +27,7 @@ const NAVBAR_STYLE = `
   .feature { position: relative; z-index: 1; gap: 10px; padding: 8px 12px; color: rgba(237, 245, 242, .82); white-space: nowrap; }
   .feature[data-active="true"] { color: #f4fbf8; }
   .feature-icon, .action-icon { display: inline-grid; place-items: center; flex: 0 0 auto; width: 32px; height: 32px; overflow: hidden; border-radius: 999px; }
-  .feature-icon img, .action-icon img { width: 20px; height: 20px; }
+  .feature-icon svg, .action-icon svg { width: 20px; height: 20px; stroke: currentColor; fill: none; }
   .feature-label, .cta { font-size: .85rem; }
   .right { grid-column: 3; display: flex; align-items: center; gap: 8px; justify-content: flex-end; min-width: 42px; }
   .quick { justify-content: center; padding: 8px 10px; color: rgba(237, 245, 242, .82); }
@@ -71,11 +71,11 @@ function navbar(site) {
 function templateFor(config) {
   const items = config.items.map(([slug, label, href, icon]) => `
     <a class="feature" data-route="${slug}" href="${href}">
-      <span class="feature-icon"><img src="${ICONS[icon]}" alt=""></span><span class="feature-label">${label}</span>
+      <span class="feature-icon" data-icon="${ICONS[icon]}"></span><span class="feature-label">${label}</span>
     </a>`).join('');
   const action = config.action === 'app'
-    ? `<button class="quick" data-action="refresh" aria-label="Refresh page"><span class="action-icon"><img src="${ICONS.refresh}" alt=""></span></button>
-       <a class="quick" href="/pages/settings" aria-label="Open settings"><span class="action-icon"><img src="${ICONS.settings}" alt=""></span></a>`
+     ? `<button class="quick" data-action="refresh" aria-label="Refresh page"><span class="action-icon" data-icon="${ICONS.refresh}"></span></button>
+       <a class="quick" href="/pages/settings" aria-label="Open settings"><span class="action-icon" data-icon="${ICONS.settings}"></span></a>`
     : '<a class="cta" href="#platform">Explorer <span aria-hidden="true">↗</span></a>';
   return `<div class="bar"><div class="inner">
     <a class="brand" href="${config.action === 'app' ? '/pages/home' : '#top'}" aria-label="Lumaris, accueil"><span class="brand-icon-wrap"><img class="brand-icon" src="https://shared-assets.lumaris.fr.eu.org/logo/logo.png" alt="Lumaris"></span></a>
@@ -90,6 +90,7 @@ class SiteNavbar extends HTMLElement {
     const config = navbar(this.getAttribute('site'));
     this.attachShadow({ mode: 'open' });
     this.shadowRoot.innerHTML = `<style>${NAVBAR_STYLE}</style>${templateFor(config)}`;
+    this.loadIcons();
     this.setupIndicator();
     this.shadowRoot.querySelector('[data-action="refresh"]')?.addEventListener('click', () => {
       const pending = [];
@@ -101,6 +102,19 @@ class SiteNavbar extends HTMLElement {
       document.dispatchEvent(new CustomEvent('site-navbar:refresh', { detail }));
       Promise.allSettled(pending);
     });
+  }
+
+  async loadIcons() {
+    const icons = this.shadowRoot.querySelectorAll('[data-icon]');
+    await Promise.all([...icons].map(async (icon) => {
+      try {
+        const response = await fetch(icon.dataset.icon);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        icon.innerHTML = await response.text();
+      } catch (error) {
+        console.error('Unable to load navbar icon', icon.dataset.icon, error);
+      }
+    }));
   }
 
   setupIndicator() {
