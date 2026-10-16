@@ -27,7 +27,7 @@ const NAVBAR_STYLE = `
   .feature { position: relative; z-index: 1; gap: 10px; padding: 8px 12px; color: rgba(237, 245, 242, .82); white-space: nowrap; }
   .feature[data-active="true"] { color: #f4fbf8; }
   .feature-icon, .action-icon { display: inline-grid; place-items: center; flex: 0 0 auto; width: 32px; height: 32px; overflow: hidden; border-radius: 999px; }
-  .feature-icon svg, .action-icon svg { width: 20px; height: 20px; stroke: currentColor; fill: none; }
+  .feature-icon svg, .action-icon svg { width: 20px; height: 20px; stroke: currentColor; }
   .feature-label, .cta { font-size: .85rem; }
   .right { grid-column: 3; display: flex; align-items: center; gap: 8px; justify-content: flex-end; min-width: 42px; }
   .quick { justify-content: center; padding: 8px 10px; color: rgba(237, 245, 242, .82); }
