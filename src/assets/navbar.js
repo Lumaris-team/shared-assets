@@ -56,6 +56,17 @@ function navbar(site) {
       action: 'app',
     };
   }
+  if (site === 'main-website') {
+    return {
+      items: [
+        ['home', 'Accueil', '/', 'home'],
+        ['how-it-works', 'How it works', '/how-it-works', 'grid'],
+        ['about-us', 'About us', '/about-us', 'notes'],
+        ['security', 'Security', '/security', 'settings'],
+      ],
+      action: 'site',
+    };
+  }
   return {
     items: [
       ['top', 'Accueil', '#top', 'home'],
@@ -76,9 +87,12 @@ function templateFor(config) {
   const action = config.action === 'app'
      ? `<button class="quick" data-action="refresh" aria-label="Refresh page"><span class="action-icon" data-icon="${ICONS.refresh}"></span></button>
        <a class="quick" href="/pages/settings" aria-label="Open settings"><span class="action-icon" data-icon="${ICONS.settings}"></span></a>`
-    : '<a class="cta" href="#platform">Explorer <span aria-hidden="true">↗</span></a>';
+    : config.action === 'site'
+      ? '<a class="cta" href="/sign-in" data-route="sign-in">Sign in <span aria-hidden="true">↗</span></a>'
+      : '<a class="cta" href="#platform">Explorer <span aria-hidden="true">↗</span></a>';
+  const brandHref = config.action === 'app' ? '/pages/home' : config.action === 'site' ? '/' : '#top';
   return `<div class="bar"><div class="inner">
-    <a class="brand" href="${config.action === 'app' ? '/pages/home' : '#top'}" aria-label="Lumaris, accueil"><span class="brand-icon-wrap"><img class="brand-icon" src="https://shared-assets.lumaris.fr.eu.org/logo/logo.png" alt="Lumaris"></span></a>
+    <a class="brand" href="${brandHref}" aria-label="Lumaris, accueil"><span class="brand-icon-wrap"><img class="brand-icon" src="https://shared-assets.lumaris.fr.eu.org/logo/logo.png" alt="Lumaris"></span></a>
     <div class="center" role="navigation" aria-label="Navigation principale"><div class="center-scroll" tabindex="0"><div class="feature-list">${items}</div></div></div>
     <div class="right">${action}</div>
   </div><span class="nav-indicator" data-hovering="false" aria-hidden="true"></span></div>`;
