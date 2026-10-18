@@ -10,6 +10,10 @@ const ICONS = {
   refresh: 'https://shared-assets.lumaris.fr.eu.org/icons/refresh.svg',
   logout: 'https://shared-assets.lumaris.fr.eu.org/icons/logout.svg',
   more: 'https://shared-assets.lumaris.fr.eu.org/icons/more.svg',
+  route: 'https://shared-assets.lumaris.fr.eu.org/icons/route.svg',
+  team: 'https://shared-assets.lumaris.fr.eu.org/icons/team.svg',
+  shield: 'https://shared-assets.lumaris.fr.eu.org/icons/shield.svg',
+  signIn: 'https://shared-assets.lumaris.fr.eu.org/icons/sign-in.svg',
 };
 
 const NAVBAR_STYLE = `
@@ -27,6 +31,8 @@ const NAVBAR_STYLE = `
   .feature { position: relative; z-index: 1; gap: 10px; padding: 8px 12px; color: rgba(237, 245, 242, .82); white-space: nowrap; }
   .feature[data-active="true"] { color: #f4fbf8; }
   .feature-icon, .action-icon { display: inline-grid; place-items: center; flex: 0 0 auto; width: 32px; height: 32px; overflow: hidden; border-radius: 999px; }
+  .action-icon-sm { width: 20px; height: 20px; }
+  .action-icon-sm svg { width: 16px !important; height: 16px !important; }
   .feature-icon svg, .action-icon svg { width: 20px; height: 20px; stroke: currentColor; }
   .feature-label, .cta { font-size: .85rem; }
   .right { grid-column: 3; display: flex; align-items: center; gap: 8px; justify-content: flex-end; min-width: 42px; }
@@ -60,9 +66,9 @@ function navbar(site) {
     return {
       items: [
         ['home', 'Accueil', '/', 'home'],
-        ['how-it-works', 'How it works', '/how-it-works', 'grid'],
-        ['about-us', 'About us', '/about-us', 'notes'],
-        ['security', 'Security', '/security', 'settings'],
+        ['how-it-works', 'How it works', '/how-it-works', 'route'],
+        ['about-us', 'About us', '/about-us', 'team'],
+        ['security', 'Security', '/security', 'shield'],
       ],
       action: 'site',
     };
@@ -88,7 +94,7 @@ function templateFor(config) {
      ? `<button class="quick" data-action="refresh" aria-label="Refresh page"><span class="action-icon" data-icon="${ICONS.refresh}"></span></button>
        <a class="quick" href="/pages/settings" aria-label="Open settings"><span class="action-icon" data-icon="${ICONS.settings}"></span></a>`
     : config.action === 'site'
-      ? '<a class="cta" href="/sign-in" data-route="sign-in">Sign in <span aria-hidden="true">↗</span></a>'
+      ? '<a class="cta" href="/sign-in" data-route="sign-in"><span class="action-icon action-icon-sm" data-icon="${ICONS.signIn}"></span>Sign in <span aria-hidden="true">↗</span></a>'
       : '<a class="cta" href="#platform">Explorer <span aria-hidden="true">↗</span></a>';
   const brandHref = config.action === 'app' ? '/pages/home' : config.action === 'site' ? '/' : '#top';
   return `<div class="bar"><div class="inner">
