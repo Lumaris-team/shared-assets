@@ -66,9 +66,9 @@ function navbar(site) {
     return {
       items: [
         ['home', 'Accueil', '/', 'home'],
-        ['how-it-works', 'How it works', '/how-it-works', 'route'],
-        ['about-us', 'About us', '/about-us', 'team'],
-        ['security', 'Security', '/security', 'shield'],
+        ['how-it-works', 'Comment ça marche', '/how-it-works', 'route'],
+        ['about-us', 'À propos', '/about-us', 'team'],
+        ['security', 'Sécurité', '/security', 'shield'],
       ],
       action: 'site',
     };
@@ -94,7 +94,7 @@ function templateFor(config) {
      ? `<button class="quick" data-action="refresh" aria-label="Refresh page"><span class="action-icon" data-icon="${ICONS.refresh}"></span></button>
        <a class="quick" href="/pages/settings" aria-label="Open settings"><span class="action-icon" data-icon="${ICONS.settings}"></span></a>`
     : config.action === 'site'
-      ? '<a class="cta" href="/sign-in" data-route="sign-in"><span class="action-icon action-icon-sm" data-icon="${ICONS.signIn}"></span>Sign in <span aria-hidden="true">↗</span></a>'
+      ? '<a class="cta" href="/sign-in" data-route="sign-in"><span class="action-icon action-icon-sm" data-icon="${ICONS.signIn}"></span>Se connecter <span aria-hidden="true">↗</span></a>'
       : '<a class="cta" href="#platform">Explorer <span aria-hidden="true">↗</span></a>';
   const brandHref = config.action === 'app' ? '/pages/home' : config.action === 'site' ? '/' : '#top';
   return `<div class="bar"><div class="inner">
