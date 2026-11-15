@@ -13,7 +13,7 @@ const ICONS = {
   route: 'https://shared-assets.lumaris.fr.eu.org/icons/route.svg',
   team: 'https://shared-assets.lumaris.fr.eu.org/icons/team.svg',
   shield: 'https://shared-assets.lumaris.fr.eu.org/icons/shield.svg',
-  signIn: 'https://shared-assets.lumaris.fr.eu.org/icons/sign-in.svg',
+  user: 'https://shared-assets.lumaris.fr.eu.org/icons/user.svg',
 };
 
 const NAVBAR_STYLE = `
@@ -37,7 +37,7 @@ const NAVBAR_STYLE = `
   .feature-label, .cta { font-size: .85rem; }
   .right { grid-column: 3; display: flex; align-items: center; gap: 8px; justify-content: flex-end; min-width: 42px; }
   .quick { justify-content: center; padding: 8px 10px; color: rgba(237, 245, 242, .82); }
-  .cta { gap: 7px; padding: 8px 9px; color: rgba(237, 245, 242, .9); white-space: nowrap; }
+  .cta { gap: 5px; padding: 6px 7px; color: rgba(237, 245, 242, .9); white-space: nowrap; }
   .cta .action-icon { color: #8cecff; }
   .brand:hover, .feature:hover, .quick:hover, .cta:hover { color: #f4fbf8; background: rgba(255, 255, 255, .05); }
   .brand:active, .feature:active, .quick:active, .cta:active { transform: translateY(1px); }
@@ -94,7 +94,7 @@ function templateFor(config) {
      ? `<button class="quick" data-action="refresh" aria-label="Refresh page"><span class="action-icon" data-icon="${ICONS.refresh}"></span></button>
        <a class="quick" href="/pages/settings" aria-label="Open settings"><span class="action-icon" data-icon="${ICONS.settings}"></span></a>`
     : config.action === 'site'
-      ? `<a class="cta" href="/sign-in" data-route="sign-in"><span class="action-icon action-icon-sm" data-icon="${ICONS.signIn}"></span><span>Se connecter</span></a>`
+      ? `<a class="cta" href="/sign-in" data-route="sign-in"><span class="action-icon action-icon-sm" data-icon="${ICONS.user}"></span><span>Se connecter</span></a>`
       : '<a class="cta" href="#platform">Explorer <span aria-hidden="true">↗</span></a>';
   const brandHref = config.action === 'app' ? '/pages/home' : config.action === 'site' ? '/' : '#top';
   return `<div class="bar"><div class="inner">
