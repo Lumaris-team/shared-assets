@@ -37,8 +37,8 @@ const NAVBAR_STYLE = `
   .feature-label, .cta { font-size: .85rem; }
   .right { grid-column: 3; display: flex; align-items: center; gap: 8px; justify-content: flex-end; min-width: 42px; }
   .quick { justify-content: center; padding: 8px 10px; color: rgba(237, 245, 242, .82); }
-  .cta { gap: 10px; padding: 8px 12px; color: rgba(237, 245, 242, .9); white-space: nowrap; }
-  .cta span { color: #8cecff; font-size: 16px; }
+  .cta { gap: 7px; padding: 8px 9px; color: rgba(237, 245, 242, .9); white-space: nowrap; }
+  .cta .action-icon { color: #8cecff; }
   .brand:hover, .feature:hover, .quick:hover, .cta:hover { color: #f4fbf8; background: rgba(255, 255, 255, .05); }
   .brand:active, .feature:active, .quick:active, .cta:active { transform: translateY(1px); }
   .nav-indicator { position: absolute; top: 0; left: 0; z-index: 0; width: 0; height: 0; border-radius: 999px; background: rgba(140, 236, 255, .16); box-shadow: 0 0 26px rgba(140, 236, 255, .14), inset 0 0 0 1px rgba(140, 236, 255, .04); opacity: 0; pointer-events: none; transform: translate3d(0, 0, 0); transition: transform 360ms cubic-bezier(.22, 1, .36, 1), width 360ms cubic-bezier(.22, 1, .36, 1), height 360ms cubic-bezier(.22, 1, .36, 1), opacity 180ms ease; }
@@ -94,7 +94,7 @@ function templateFor(config) {
      ? `<button class="quick" data-action="refresh" aria-label="Refresh page"><span class="action-icon" data-icon="${ICONS.refresh}"></span></button>
        <a class="quick" href="/pages/settings" aria-label="Open settings"><span class="action-icon" data-icon="${ICONS.settings}"></span></a>`
     : config.action === 'site'
-      ? '<a class="cta" href="/sign-in" data-route="sign-in"><span class="action-icon action-icon-sm" data-icon="${ICONS.signIn}"></span>Se connecter <span aria-hidden="true">↗</span></a>'
+      ? `<a class="cta" href="/sign-in" data-route="sign-in"><span class="action-icon action-icon-sm" data-icon="${ICONS.signIn}"></span><span>Se connecter</span></a>`
       : '<a class="cta" href="#platform">Explorer <span aria-hidden="true">↗</span></a>';
   const brandHref = config.action === 'app' ? '/pages/home' : config.action === 'site' ? '/' : '#top';
   return `<div class="bar"><div class="inner">
