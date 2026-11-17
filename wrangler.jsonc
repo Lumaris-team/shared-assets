@@ -1,0 +1,29 @@
+{
+  // Principal informations
+  "name": "shared-assets",
+  "main": "src/index.js",
+  "compatibility_date": "2026-07-19",
+  "workers_dev": true,
+  "compatibility_flags": ["nodejs_compat"],
+
+  // Static site
+  "assets": {
+    "directory": "./src/assets",
+    "binding": "ASSETS"
+  },
+
+  // Observability
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1,
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "invocation_logs": true
+    },
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 1
+    }
+  }
+}
