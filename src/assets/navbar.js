@@ -43,6 +43,7 @@ const NAVBAR_STYLE = `
   .brand:active, .feature:active, .quick:active, .cta:active { transform: translateY(1px); }
   .nav-indicator { position: absolute; top: 0; left: 0; z-index: 0; width: 0; height: 0; border-radius: 999px; background: rgba(140, 236, 255, .16); box-shadow: 0 0 26px rgba(140, 236, 255, .14), inset 0 0 0 1px rgba(140, 236, 255, .04); opacity: 0; pointer-events: none; transform: translate3d(0, 0, 0); transition: transform 360ms cubic-bezier(.22, 1, .36, 1), width 360ms cubic-bezier(.22, 1, .36, 1), height 360ms cubic-bezier(.22, 1, .36, 1), opacity 180ms ease; }
   .nav-indicator[data-hovering="true"], .nav-indicator[data-hovering="false"] { opacity: 1; }
+  @media (max-aspect-ratio: 3/5) { .bar { min-height: 38px; padding: 5px 10px; } .brand-icon-wrap { width: 50px; height: 36px; } .brand-icon { width: 44px; height: 36px; } .feature-icon, .action-icon { width: 28px; height: 28px; } .feature-icon svg, .action-icon svg { width: 17px; height: 17px; } .feature-label, .cta { font-size: .78rem; } .feature { gap: 8px; padding: 7px 10px; } .cta { padding: 5px 6px; } }
   @media (max-width: 640px) { :host { inset: 8px 10px auto; } .bar { min-height: 48px; padding: 10px; border-radius: 20px; } .feature-label { display: none; } .feature { padding: 8px 10px; } .quick:not(.more) { display: none; } }
 `;
 
