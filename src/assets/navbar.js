@@ -2,7 +2,7 @@ const ICONS = {
   home: 'https://shared-assets.lumaris.fr.eu.org/icons/home.svg',
   grid: 'https://shared-assets.lumaris.fr.eu.org/icons/grid.svg',
   sparkles: 'https://shared-assets.lumaris.fr.eu.org/icons/sparkles.svg',
-  notes: 'https://shared-assets.lumaris.fr.eu.org/icons/study-notes.svg',
+  all: 'https://shared-assets.lumaris.fr.eu.org/icons/all.svg',
   web: 'https://shared-assets.lumaris.fr.eu.org/icons/web.svg',
   files: 'https://shared-assets.lumaris.fr.eu.org/icons/database.svg',
   tools: 'https://shared-assets.lumaris.fr.eu.org/icons/wrench.svg',
@@ -46,18 +46,34 @@ const NAVBAR_STYLE = `
   @media (max-width: 640px) { :host { inset: 8px 10px auto; } .bar { min-height: 48px; padding: 10px; border-radius: 20px; } .feature-label { display: none; } .feature { padding: 8px 10px; } .quick:not(.more) { display: none; } }
 `;
 
+function accountBase() {
+  return window.__ACCOUNT_BASE_PATH__ || '';
+}
+
+function authQuery() {
+  try {
+    const jwt = sessionStorage.getItem('jwt_token');
+    const token = sessionStorage.getItem('one_time_token');
+    const username = sessionStorage.getItem('username');
+    if (!jwt || !token || !username) return '';
+    return `?${new URLSearchParams({ jwt, token, username })}`;
+  } catch {
+    return '';
+  }
+}
+
+function appHref(path) {
+  return `${accountBase()}${path}${authQuery()}`;
+}
+
 function navbar(site) {
   const isApp = site === 'client-worker';
   if (isApp) {
     return {
       items: [
-        ['home', 'Home', '/pages/home', 'home'],
-        ['workspace', 'Workspace', '/pages/workspace', 'grid'],
-        ['ai', 'AI', '/pages/ai', 'sparkles'],
-        ['study-notes', 'Study Notes', '/pages/study-notes', 'notes'],
-        ['websites', 'Websites', '/pages/websites', 'web'],
-        ['files', 'Files', '/pages/files', 'files'],
-        ['tools', 'Tools', '/pages/tools', 'tools'],
+        ['home', 'Home', appHref('/pages/home'), 'home'],
+        ['workspace', 'Workspace', appHref('/pages/workspace'), 'grid'],
+        ['all', 'Tout', appHref('/pages/all'), 'all'],
       ],
       action: 'app',
     };
@@ -92,11 +108,12 @@ function templateFor(config) {
     </a>`).join('');
   const action = config.action === 'app'
      ? `<button class="quick" data-action="refresh" aria-label="Refresh page"><span class="action-icon" data-icon="${ICONS.refresh}"></span></button>
-       <a class="quick" href="/pages/settings" aria-label="Open settings"><span class="action-icon" data-icon="${ICONS.settings}"></span></a>`
+       <a class="quick" href="${appHref('/pages/settings')}" aria-label="Open settings"><span class="action-icon" data-icon="${ICONS.settings}"></span></a>
+       <button class="quick" data-action="logout" aria-label="Sign out"><span class="action-icon" data-icon="${ICONS.logout}"></span></button>`
     : config.action === 'site'
       ? `<a class="cta" href="/sign-in" data-route="sign-in"><span class="action-icon action-icon-sm" data-icon="${ICONS.user}"></span><span>Se connecter</span></a>`
       : '<a class="cta" href="#platform">Explorer <span aria-hidden="true">↗</span></a>';
-  const brandHref = config.action === 'app' ? '/pages/home' : config.action === 'site' ? '/' : '#top';
+  const brandHref = config.action === 'app' ? appHref('/pages/home') : config.action === 'site' ? '/' : '#top';
   return `<div class="bar"><div class="inner">
     <a class="brand" href="${brandHref}" aria-label="Lumaris, accueil"><span class="brand-icon-wrap"><img class="brand-icon" src="https://shared-assets.lumaris.fr.eu.org/logo/logo.png" alt="Lumaris"></span></a>
     <div class="center" role="navigation" aria-label="Navigation principale"><div class="center-scroll" tabindex="0"><div class="feature-list">${items}</div></div></div>
@@ -112,15 +129,21 @@ class SiteNavbar extends HTMLElement {
     this.shadowRoot.innerHTML = `<style>${NAVBAR_STYLE}</style>${templateFor(config)}`;
     this.loadIcons();
     this.setupIndicator();
+    const dispatch = (name, detail) => {
+      window.dispatchEvent(new CustomEvent(name, { detail }));
+      document.dispatchEvent(new CustomEvent(name, { detail }));
+    };
     this.shadowRoot.querySelector('[data-action="refresh"]')?.addEventListener('click', () => {
       const pending = [];
       const detail = {
         current: window.location.pathname.split('/').filter(Boolean).pop() || 'home',
         waitUntil: (promise) => { if (promise) pending.push(Promise.resolve(promise)); },
       };
-      window.dispatchEvent(new CustomEvent('site-navbar:refresh', { detail }));
-      document.dispatchEvent(new CustomEvent('site-navbar:refresh', { detail }));
-      Promise.allSettled(pending);
+      dispatch('site-navbar:refresh', detail);
+      Promise.allSettled(pending).then(() => dispatch('site-navbar:refresh-done', detail));
+    });
+    this.shadowRoot.querySelector('[data-action="logout"]')?.addEventListener('click', () => {
+      dispatch('site-navbar:logout', {});
     });
   }
 
