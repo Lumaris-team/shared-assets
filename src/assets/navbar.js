@@ -141,6 +141,11 @@ class SiteNavbar extends HTMLElement {
         waitUntil: (promise) => { if (promise) pending.push(Promise.resolve(promise)); },
       };
       dispatch('site-navbar:refresh', detail);
+      if (pending.length === 0) {
+        // No page-specific refresh handler registered — fall back to reload.
+        window.location.reload();
+        return;
+      }
       Promise.allSettled(pending).then(() => dispatch('site-navbar:refresh-done', detail));
     });
     this.shadowRoot.querySelector('[data-action="logout"]')?.addEventListener('click', () => {
