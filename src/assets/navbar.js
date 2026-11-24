@@ -72,8 +72,8 @@ function navbar(site) {
   if (isApp) {
     return {
       items: [
-        ['home', 'Home', appHref('/pages/home'), 'home'],
-        ['workspace', 'Workspace', appHref('/pages/workspace'), 'grid'],
+        ['home', 'Accueil', appHref('/pages/home'), 'home'],
+        ['workspace', 'Espace', appHref('/pages/workspace'), 'grid'],
         ['all', 'Tout', appHref('/pages/all'), 'all'],
       ],
       action: 'app',
@@ -108,9 +108,9 @@ function templateFor(config) {
       <span class="feature-icon" data-icon="${ICONS[icon]}"></span><span class="feature-label">${label}</span>
     </a>`).join('');
   const action = config.action === 'app'
-     ? `<button class="quick" data-action="refresh" aria-label="Refresh page"><span class="action-icon" data-icon="${ICONS.refresh}"></span></button>
-       <a class="quick" href="${appHref('/pages/settings')}" aria-label="Open settings"><span class="action-icon" data-icon="${ICONS.settings}"></span></a>
-       <button class="quick" data-action="logout" aria-label="Sign out"><span class="action-icon" data-icon="${ICONS.logout}"></span></button>`
+     ? `<button class="quick" data-action="refresh" aria-label="Actualiser la page"><span class="action-icon" data-icon="${ICONS.refresh}"></span></button>
+       <a class="quick" href="${appHref('/pages/settings')}" aria-label="Ouvrir les paramètres"><span class="action-icon" data-icon="${ICONS.settings}"></span></a>
+       <button class="quick" data-action="logout" aria-label="Se déconnecter"><span class="action-icon" data-icon="${ICONS.logout}"></span></button>`
     : config.action === 'site'
       ? `<a class="cta" href="/sign-in" data-route="sign-in"><span class="action-icon action-icon-sm" data-icon="${ICONS.user}"></span><span>Se connecter</span></a>`
       : '<a class="cta" href="#platform">Explorer <span aria-hidden="true">↗</span></a>';
