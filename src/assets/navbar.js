@@ -18,7 +18,7 @@ const ICONS = {
 
 const NAVBAR_STYLE = `
   :host { position: fixed; inset: 10px 14px auto; z-index: 1200; display: block; box-sizing: border-box; color: #edf5f2; pointer-events: none; }
-  .bar { position: relative; min-height: 42px; padding: 6px 12px; overflow: hidden; border: 1px solid transparent; border-radius: 24px; background: rgba(8, 9, 18, .28); box-shadow: 0 10px 40px rgba(0, 0, 0, .18), 0 0 34px rgba(146, 116, 255, .08), inset 0 0 0 1px rgba(255, 255, 255, .04), inset 0 1px 0 rgba(255, 255, 255, .08); backdrop-filter: blur(22px) saturate(1.15); -webkit-backdrop-filter: blur(22px) saturate(1.15); pointer-events: auto; }
+  .bar { position: relative; min-height: 42px; padding: 6px 12px; overflow: hidden; border: 1px solid transparent; border-radius: 24px; corner-shape: squircle; background: rgba(8, 9, 18, .28); box-shadow: 0 10px 40px rgba(0, 0, 0, .18), 0 0 34px rgba(146, 116, 255, .08), inset 0 0 0 1px rgba(255, 255, 255, .04), inset 0 1px 0 rgba(255, 255, 255, .08); backdrop-filter: blur(22px) saturate(1.15); -webkit-backdrop-filter: blur(22px) saturate(1.15); pointer-events: auto; }
   .inner { position: relative; z-index: 1; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 8px; }
   .brand, .feature, .quick, .cta { display: inline-flex; align-items: center; border: 1px solid transparent; border-radius: 999px; background: transparent; color: inherit; cursor: pointer; text-decoration: none; transition: transform 180ms ease, color 180ms ease, background 180ms ease; }
   .brand { grid-column: 1; padding: 4px 0; }
@@ -181,8 +181,22 @@ class SiteNavbar extends HTMLElement {
       indicator.style.transform = `translate3d(${linkRect.left - barRect.left}px, ${linkRect.top - barRect.top}px, 0)`;
     };
     const active = () => {
-      const key = window.location.hash.slice(1) || window.location.pathname.split('/').filter(Boolean).pop() || 'home';
-      const selected = links.find((link) => link.dataset.route === key) || links[0];
+      const segments = window.location.pathname.split('/').filter(Boolean);
+      const pagesIdx = segments.indexOf('pages');
+      let key = window.location.hash.slice(1);
+      if (!key) {
+        if (pagesIdx >= 0 && segments[pagesIdx + 1]) {
+          key = segments[pagesIdx + 1];
+        } else if (segments[0] === 'account' && segments.length <= 2) {
+          key = 'home'; // bare /account/<user>/ serves the home page
+        } else {
+          key = segments[segments.length - 1] || 'home';
+        }
+      }
+      // Page not represented in the navbar -> highlight "Tout" (all) when the
+      // app navbar offers it, otherwise fall back to the first item.
+      const fallback = links.find((link) => link.dataset.route === 'all') || links[0];
+      const selected = links.find((link) => link.dataset.route === key) || fallback;
       links.forEach((link) => { link.dataset.active = String(link === selected); });
       move(selected, false);
     };
