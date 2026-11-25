@@ -73,7 +73,7 @@ function navbar(site) {
     return {
       items: [
         ['home', 'Accueil', appHref('/pages/home'), 'home'],
-        ['workspace', 'Espace', appHref('/pages/workspace'), 'grid'],
+        ['workspace', 'Workspace', appHref('/pages/workspace'), 'grid'],
         ['all', 'Tout', appHref('/pages/all'), 'all'],
       ],
       action: 'app',
@@ -95,7 +95,7 @@ function navbar(site) {
       ['top', 'Accueil', '#top', 'home'],
       ['platform', 'Plateforme', '#platform', 'grid'],
       ['intelligence', 'Intelligence', '#intelligence', 'sparkles'],
-      ['workspace', 'Espace', '#workspace', 'files'],
+      ['workspace', 'Workspace', '#workspace', 'files'],
       ['focus', 'Focus', '#focus', 'tools'],
     ],
     action: 'landing',
